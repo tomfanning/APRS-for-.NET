@@ -1,0 +1,100 @@
+﻿<Window x:Class="AprsTracker.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ve="clr-namespace:InfoStrat.VE;assembly=InfoStrat.VE"
+    Title="APRS Tracker" Width="800" Height="600">
+    <DockPanel LastChildFill="True">
+        <ListBox Width="100" ItemsSource="{Binding TrackedObjectList}" SelectedItem="{Binding CurrentlyTrackedObject}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding LatestPacketInfoVM.PacketInfo.Callsign}"></TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <Grid DockPanel.Dock="Bottom" Margin="8">
+            
+            <Grid.Resources>
+                <Style x:Key="Data" TargetType="{x:Type TextBlock}">
+                    <Setter Property="Margin" Value="8 0 0 0"></Setter>
+                </Style>
+            </Grid.Resources>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Callsign:" Grid.Row="0" Grid.Column="0"></TextBlock>
+            <TextBlock Style="{StaticResource Data}" Text="{Binding CurrentlyTrackedObject.LatestPacketInfoVM.PacketInfo.Callsign}" Grid.Row="0" Grid.Column="1"></TextBlock>
+
+            <TextBlock Text="Last Packet Received:" Grid.Row="1" Grid.Column="0"></TextBlock>
+            <TextBlock Style="{StaticResource Data}" Text="{Binding CurrentlyTrackedObject.LatestPacketInfoVM.DateReceivedLocalTime}" Grid.Row="1" Grid.Column="1"></TextBlock>
+
+            <TextBlock Text="Latitude:" Grid.Row="2" Grid.Column="0"></TextBlock>
+            <TextBlock Style="{StaticResource Data}" Text="{Binding CurrentlyTrackedObject.LatestPacketInfoVM.PacketInfo.Latitude}" Grid.Row="2" Grid.Column="1"></TextBlock>
+
+            <TextBlock Text="Longitude:" Grid.Row="3" Grid.Column="0"></TextBlock>
+            <TextBlock Style="{StaticResource Data}" Text="{Binding CurrentlyTrackedObject.LatestPacketInfoVM.PacketInfo.Longitude}" Grid.Row="3" Grid.Column="1"></TextBlock>
+
+            <TextBlock Text="Altitude:" Grid.Row="0" Grid.Column="2"></TextBlock>
+            <TextBlock Style="{StaticResource Data}" Text="{Binding CurrentlyTrackedObject.LatestPacketInfoVM.PacketInfo.Altitude}" Grid.Row="0" Grid.Column="3"></TextBlock>
+
+            <TextBlock Text="Speed:" Grid.Row="1" Grid.Column="2"></TextBlock>
+            <TextBlock Style="{StaticResource Data}" Text="{Binding CurrentlyTrackedObject.LatestPacketInfoVM.PacketInfo.Speed}" Grid.Row="1" Grid.Column="3"></TextBlock>
+
+            <TextBlock Text="Heading:" Grid.Row="2" Grid.Column="2"></TextBlock>
+            <TextBlock Style="{StaticResource Data}" Text="{Binding CurrentlyTrackedObject.LatestPacketInfoVM.PacketInfo.Direction}" Grid.Row="2" Grid.Column="3"></TextBlock>
+        </Grid>
+        
+        <Grid MinHeight="100">
+            <ve:VEMap x:Name="map"
+                MapStyle="Hybrid"
+                Loaded="map_Loaded" Altitude="{Binding Path=MapLocationVM.Altitude, Mode=TwoWay}"
+                LatLong="{Binding MapLocationVM.LatLong}">
+
+                <!--ItemsSource="{Binding CurrentlyTrackedObject.PacketInfoHistory}"
+                <ve:VEMap.ItemTemplate>
+                    <DataTemplate>
+                        <ve:VEPushPin 
+                            Latitude="38.9444195081574" 
+                            Longitude="-77.0630161230201">
+
+                            <StackPanel>
+                                <TextBlock Text="{Binding PacketInfo.Callsign}"
+                                    HorizontalAlignment="Center"
+                                    FontSize="20" />
+                            </StackPanel>
+
+                        </ve:VEPushPin>
+                    </DataTemplate>
+                </ve:VEMap.ItemTemplate>-->
+                
+                <!--{Binding PacketInfo.Latitude.Value}-->
+                <!--{Binding PacketInfo.Longitude.Value}-->
+
+                <!--<ve:VEPushPin Latitude="38.9444195081574"
+                          Longitude="-77.0630161230201">
+                    <StackPanel>
+                        <TextBlock Text="Hello, WPF!"
+                               HorizontalAlignment="Center"
+                               FontSize="20" />
+                        <TextBlock Text="www.infostrat.com"
+                               HorizontalAlignment="Center" />
+                    </StackPanel>
+                </ve:VEPushPin>-->
+            </ve:VEMap>
+            
+            <Slider Orientation="Vertical" Maximum="23.25349666" Minimum="6.64385619" IsDirectionReversed="True" Value="{Binding MapLocationVM.ScaledAltitude}"></Slider>
+            
+        </Grid>
+    </DockPanel>
+</Window>
